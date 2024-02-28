@@ -13,6 +13,7 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 51, 51, 51;
     --background-end-rgb: 51, 51, 51;
+    color-scheme: dark;
   }
 }
 
