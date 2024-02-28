@@ -25,6 +25,9 @@ const ManageClasses: React.FC = () => {
     useEffect(() => {
         setIsClient(true);
     }, []);
+    useEffect(() => {
+        if (addedClasses.length > 0 && isClient) (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + screen.width / 434);
+    });
 
     return (addedClasses.length > 0 && isClient) ? (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">

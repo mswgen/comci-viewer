@@ -35,6 +35,10 @@ const Timetable: React.FC<{
         }
         fetchTimetable();
     }, [classData]);
+
+    useEffect(() => {
+        (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + screen.width / 696)
+    });
     return (
         <>
             <br />

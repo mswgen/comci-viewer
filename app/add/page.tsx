@@ -32,7 +32,7 @@ const AddClass: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem]" /></button>
+                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem]" tabIndex={1} /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
                 <p>학교를 먼저 선택하세요.</p>
@@ -41,11 +41,11 @@ const AddClass: React.FC = () => {
                     if (e.currentTarget.value.length < 1) return;
                     const schoolList = await fetch(`/api/search?name=${e.currentTarget.value}`).then(res => res.json());
                     setSchoolList(schoolList.data || []);
-                }} />
+                }} tabIndex={2} />
                 {schoolList.length > 0 &&
                     <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
                         {schoolList.map((school: ({ name: string, code: number }), i) => (
-                            <div key={i} className={`pt-3 pl-3 pb-3 border-b border-slate-400 ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} style={{ cursor: 'pointer' }} onClick={() => {
+                            <div key={i} tabIndex={i + 3} className={`pt-3 pl-3 pb-3 border-b border-slate-400 ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} style={{ cursor: 'pointer' }} onClick={() => {
                                 setTmpSchool(school);
                                 setPhase(2);
                             }}>
