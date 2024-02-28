@@ -31,7 +31,7 @@ const Home: React.FC = () => {
                     <br />
                     <p>시간표를 추가하세요.</p>
                     <Link href="/add">
-                        <button className="w-[70%] ml-[15%] mr-[15%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 transition-all ease-in-out duration-200 focus:ring">
+                        <button className="w-[70%] ml-[15%] mr-[15%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 transition-all ease-in-out duration-200 focus:ring">
                             추가하기
                         </button>
                     </Link>
@@ -49,17 +49,17 @@ const Home: React.FC = () => {
                         <span />
                         <Link href="/manage">
                             <button>
-                                <Image src="settings.svg" alt="시간표 관리하기" width={24} height={24} />
+                                <Image src="settings.svg" alt="시간표 관리하기" width={24} height={24} className="dark:invert" />
                             </button>
                         </Link>
                     </div>
                     <br />
-                    <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[100%]" id="grade" onChange={(e) => {
+                    <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[100%] dark:bg-[#424242]" id="grade" defaultValue={classSelection} onChange={(e) => {
                         setClassSelection(parseInt(e.currentTarget.value));
                     }}>
                         {
                             Array.from({ length: addedClasses.length }, (_, i) => (
-                                <option key={i} value={i} selected={i === classSelection}>{addedClasses[i].school.name} {addedClasses[i].grade + 1}학년 {addedClasses[i].classNum + 1}반</option>
+                                <option key={i} value={i}>{addedClasses[i].school.name} {addedClasses[i].grade + 1}학년 {addedClasses[i].classNum + 1}반</option>
                             ))
                         }
                     </select>

@@ -15,10 +15,10 @@ type LSClass = {
 
 function Card({ content1, content2, gradient }: { key: number, content1: string, content2?: string, gradient?: boolean }) {
     return (
-        <div className={`${gradient && `bg-gradient-to-br from-slate-300 to-white`} rounded-lg p-2 mb-2 min-w-16 whitespace-nowrap`}>
-            <p className={`center font-bold text-lg ${content1 == '' && 'text-gray-400'}`}>{content1 == '' ? '수업 없음' : content1}</p>
+        <div className={`${gradient && `bg-gradient-to-br from-slate-300 to-white dark:from-slate-800 dark:to-black`} rounded-lg p-2 mb-2 min-w-16 whitespace-nowrap`}>
+            <p className={`center font-bold text-lg ${content1 == '' && 'text-gray-400 dark:text-gray-500'}`}>{content1 == '' ? '수업 없음' : content1}</p>
             {
-                content2 ? <p className="center text-sm">{content2}</p> : <br />
+                content2 ? <p className="center text-sm">{content2}</p> : <div className="h-5" />
             }
         </div>
     )
@@ -42,7 +42,7 @@ const Timetable: React.FC<{
     return (
         <>
             <br />
-            <p>{classData.school.name} {classData.grade + 1}학년 {classData.classNum + 1}반</p>
+            <h2 className="font-bold text-xl">{classData.school.name} {classData.grade + 1}학년 {classData.classNum + 1}반</h2>
             <p>마지막 업데이트: {new Date(timetable.lastUpdated).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
             <br />
             <div className="grid grid-cols-5 gap-0">

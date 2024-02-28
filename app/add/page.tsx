@@ -32,12 +32,12 @@ const AddClass: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem]" tabIndex={1} /></button>
+                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" tabIndex={1} /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
                 <p>학교를 먼저 선택하세요.</p>
                 <br />
-                <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%]" id="schoolName" placeholder="학교 이름" onKeyUp={async (e) => {
+                <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%] dark:bg-[#424242]" id="schoolName" placeholder="학교 이름" onKeyUp={async (e) => {
                     if (e.currentTarget.value.length < 1) return;
                     const schoolList = await fetch(`/api/search?name=${e.currentTarget.value}`).then(res => res.json());
                     setSchoolList(schoolList.data || []);
@@ -87,12 +87,12 @@ const AddClass2: React.FC<{
                     e.preventDefault();
                     setPhase(1);
                     
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem]" /></button>
+                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
                 <p>학년, 반을 선택하세요.</p>
                 <br />
-                <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[45%]" id="grade" onChange={(e) => {
+                <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[45%] dark:bg-[#424242]" id="grade" onChange={(e) => {
                     if (e.target.value === "placeholder") setGrade(-1);
                     else setGrade(parseInt(e.currentTarget.value) - 1);
                 }}>
@@ -103,7 +103,7 @@ const AddClass2: React.FC<{
                         ))
                     }
                 </select>
-                <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 ml-2 w-[45%]" id="class" onChange={(e) => {
+                <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 ml-2 w-[45%] dark:bg-[#424242]" id="class" onChange={(e) => {
                     if (e.target.value === "placeholder") setClassNum(-1);
                     else setClassNum(parseInt(e.currentTarget.value) - 1);
                 }}>
@@ -117,7 +117,7 @@ const AddClass2: React.FC<{
                     }
                 </select>
                 {(addedClasses.some(x => x.school.code == school.code && x.grade === grade && x.classNum === classNum)) ? <div className="text-red-500">이미 추가된 반입니다.</div> : <br />}
-                <button className="w-[40%] ml-[30%] mr-[30%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 disabled:bg-gray-400 disabled:hover:bg-gray-500 transition-all ease-in-out duration-200 focus:ring" disabled={grade === -1 || classNum == -1 || addedClasses.some(x => x.school.code == school.code && x.grade === grade && x.classNum === classNum)} onClick={(e) => {
+                <button className="w-[40%] ml-[30%] mr-[30%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:hover:bg-gray-500 dark:disabled:hover:bg-gray-700 transition-all ease-in-out duration-200 focus:ring" disabled={grade === -1 || classNum == -1 || addedClasses.some(x => x.school.code == school.code && x.grade === grade && x.classNum === classNum)} onClick={(e) => {
                     setAddedClasses([...addedClasses, { school, grade, classNum }]);
                     setClassSelection(addedClasses.length);
                     router.push('/');

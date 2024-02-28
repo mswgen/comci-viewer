@@ -35,7 +35,7 @@ const ManageClasses: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem]" /></button>
+                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
                 <br />
                 <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
@@ -50,7 +50,7 @@ const ManageClasses: React.FC = () => {
                                         setAddedClasses(addedClasses.filter((x) => x.school.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                     }
                                 }}>
-                                    <Image src="remove.svg" alt="삭제" width={24} height={24} className="mr-3" />
+                                    <Image src="remove.svg" alt="삭제" width={24} height={24} className="mr-3 dark:invert" />
                                 </button>
                             </div>
                         </div>
@@ -58,7 +58,7 @@ const ManageClasses: React.FC = () => {
                 </div>
                 <br />
                 <Link href="/add">
-                    <button className="w-[70%] ml-[15%] mr-[15%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 transition-all ease-in-out duration-200 focus:ring">
+                    <button className="w-[70%] ml-[15%] mr-[15%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 transition-all ease-in-out duration-200 focus:ring">
                         시간표 추가하기
                     </button>
                 </Link>
@@ -75,7 +75,7 @@ const ManageClasses: React.FC = () => {
                 <br />
                 <p>현재 추가된 시간표가 없습니다.</p>
                 <Link href="/add">
-                    <button className="w-[60%] ml-[20%] mr-[20%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 transition-all ease-in-out duration-200 focus:ring">
+                    <button className="w-[60%] ml-[20%] mr-[20%] pt-3 pb-3 mt-4 rounded-lg bg-blue-500 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-800 transition-all ease-in-out duration-200 focus:ring">
                         시간표 추가하기
                     </button>
                 </Link>
