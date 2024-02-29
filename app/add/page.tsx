@@ -45,7 +45,7 @@ const AddClass: React.FC = () => {
                 {schoolList.length > 0 &&
                     <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
                         {schoolList.map((school: ({ name: string, code: number }), i) => (
-                            <div key={i} tabIndex={i + 3} className={`pt-3 pl-3 pb-3 border-b border-slate-400 ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} style={{ cursor: 'pointer' }} onClick={() => {
+                            <div key={i} tabIndex={i + 3} className={`pt-3 pl-3 pb-3 border-b border-slate-400 cursor-pointer ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} onClick={() => {
                                 setTmpSchool(school);
                                 setPhase(2);
                             }}>
