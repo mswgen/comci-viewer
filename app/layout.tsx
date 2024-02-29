@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 async function getSiteCodeStatus() {
-  return await (await fetch(`${process.env.URL}/api/checkSiteCode`, { cache: 'no-store' })).json();
+  return await (await fetch(`http://localhost:3000/api/checkSiteCode`, { cache: 'no-store' })).json();
 }
 
 export default async function RootLayout({
