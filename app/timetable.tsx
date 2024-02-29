@@ -41,7 +41,7 @@ const Timetable: React.FC<{
     }, [classData]);
 
     useEffect(() => {
-        (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + Math.min(1, screen.width / 696))
+        (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + Math.min(1, screen.width / 697))
     });
     return (
         <>
