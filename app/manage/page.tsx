@@ -26,7 +26,7 @@ const ManageClasses: React.FC = () => {
         setIsClient(true);
     }, []);
     useEffect(() => {
-        if (addedClasses.length > 0 && isClient) (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + screen.width / 434);
+        if (addedClasses.length > 0 && isClient) (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + Math.min(1, screen.width / 434));
     });
 
     return (addedClasses.length > 0 && isClient) ? (
