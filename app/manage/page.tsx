@@ -1,5 +1,7 @@
 'use client';
 
+import localforage from 'localforage';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -25,6 +27,12 @@ const ManageClasses: React.FC = () => {
     useEffect(() => {
         setIsClient(true);
     }, []);
+    useEffect(() => {
+        localforage.setItem("classSelection", classSelection);
+    }, [classSelection]);
+    useEffect(() => {
+        localforage.setItem("addedClasses", addedClasses);
+    }, [addedClasses]);
 
     return (addedClasses.length > 0 && isClient) ? (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">

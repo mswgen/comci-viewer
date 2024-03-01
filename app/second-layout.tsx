@@ -1,17 +1,23 @@
 'use client';
 
 import { Noto_Sans_KR } from "next/font/google";
+import localforage from "localforage";
 
 import { useState, useEffect } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 import "./globals.css";
 
 const NotoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
-type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
+type LSClass = {
+  school: {
+    name: string,
+    code: number
+  },
+  grade: number,
+  classNum: number
+};
 
 async function getSiteCodeStatus() {
   return await (await fetch(`/api/checkSiteCode`, { cache: 'no-store' })).json();
@@ -23,13 +29,48 @@ export default function SecondLayout({
   children: React.ReactNode;
 }>) {
   const [isSiteCodeChanged, setIsSiteCodeChanged] = useState(false);
+  const [addedClasses, setAddedClasses] = useLocalStorage<Array<LSClass>>("addedClasses", []);
+
   useEffect(() => {
     getSiteCodeStatus().then((stat) => {
       if (stat.code === 1) {
         setIsSiteCodeChanged(true);
       }
+    }).catch(() => {
+      setIsSiteCodeChanged(false);
     });
   });
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  }, []);
+  useEffect(() => {
+    async function registerPeriodicFeedUpdate() {
+      const registration = await navigator.serviceWorker.ready;
+      const status = await navigator.permissions.query({
+        name: 'periodic-background-sync' as PermissionName
+      });
+      if (status.state !== 'granted') return;
+      try {
+        const tags: Array<string> = await (registration as any).periodicSync.getTags();
+        tags.forEach(async tag => {
+          if (addedClasses.some((cls) => tag === `timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`)) return;
+          await (registration as any).periodicSync.unregister(tag);
+        });
+        addedClasses.forEach(async cls => {
+          if (tags.some((tag) => tag === `timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`)) return;
+          await (registration as any).periodicSync.register(`timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`, {
+            minInterval: 60 * 60 * 1000
+          });
+        });
+      } catch (e) { }
+    }
+    registerPeriodicFeedUpdate();
+  }, [addedClasses]);
+  useEffect(() => {
+    localforage.setItem('addedClasses', addedClasses);
+  }, [addedClasses]);
 
   if (isSiteCodeChanged) {
     return (

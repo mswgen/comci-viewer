@@ -1,5 +1,7 @@
 'use client';
 
+import localforage from 'localforage';
+
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,9 +22,31 @@ const Home: React.FC = () => {
     const [classSelection, setClassSelection] = useLocalStorage("classSelection", 0);
     const [addedClasses, setAddedClasses] = useLocalStorage<Array<LSClass>>("addedClasses", []);
     const [isClient, setIsClient] = useState(false);
+    const [classSelectionInit, setClassSelectionInit] = useState(false);
+
     useEffect(() => {
         setIsClient(true);
     }, []);
+    useEffect(() => {
+        const getIndexedDBClassSelection = async () => {
+            const classSelection = await localforage.getItem("classSelection");
+            return classSelection;
+        }
+        getIndexedDBClassSelection().then(IDClassSelection => {
+            if (typeof IDClassSelection === 'number' && IDClassSelection !== classSelection) setClassSelection(IDClassSelection);
+            setClassSelectionInit(true);
+        });
+    }, [classSelection, setClassSelection]);
+    useEffect(() => {
+        if (classSelectionInit) {
+            localforage.setItem("classSelection", classSelection);
+            setClassSelectionInit(false);
+        }
+    }, [classSelection, classSelectionInit]);
+    useEffect(() => {
+        localforage.setItem("addedClasses", addedClasses);
+    }, [addedClasses]);
+
     if (!addedClasses || addedClasses.length === 0 || !isClient) {
         return (
             <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto flex-shrink">
@@ -54,6 +78,7 @@ const Home: React.FC = () => {
                         </Link>
                     </div>
                     <br />
+                    <label htmlFor="grade" className="block w-0 h-0">시간표 선택</label>
                     <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[100%] dark:bg-[#424242]" id="grade" defaultValue={classSelection} onChange={(e) => {
                         setClassSelection(parseInt(e.currentTarget.value));
                     }}>

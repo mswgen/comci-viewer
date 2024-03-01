@@ -1,5 +1,7 @@
 'use client';
 
+import localforage from 'localforage';
+
 import Image from 'next/image';
 
 import { useState, useEffect } from 'react';
@@ -19,46 +21,83 @@ type LSClass = {
     classNum: number
 };
 
+async function isOnline() {
+    try {
+        await fetch('/api/isOnline', { cache: 'no-store' });
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 const AddClass: React.FC = () => {
     const [schoolList, setSchoolList] = useState([]);
     const [tmpSchool, setTmpSchool] = useState({ name: '', code: 0 });
+    const [isOffline, setIsOffline] = useState(false);
     const [phase, setPhase] = useState(1);
     const [addedClasses, setAddedClasses] = useLocalStorage<Array<LSClass>>("addedClasses", []);
     const router = useRouter();
 
-    return phase === 1 ? (
+    useEffect(() => {
+        async function checkConnectivity() {
+            if (await isOnline() && isOffline) {
+                setTimeout(() => {
+                    setIsOffline(false);
+                }, 300);
+            } else if (isOffline === await isOnline()) setIsOffline(!await isOnline());
+        }
+        const onlineCheck = setInterval(async () => {
+            checkConnectivity();
+        }, 1000);
+        checkConnectivity();
+        return () => clearInterval(onlineCheck);
+    }, [isOffline]);
+    useEffect(() => {
+        localforage.setItem("addedClasses", addedClasses);
+    }, [addedClasses]);
+
+    return isOffline ? (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
             <div className="border border-slate-300 rounded p-8">
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" tabIndex={1} /></button>
-                <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
-                <br />
-                <p>학교를 먼저 선택하세요.</p>
-                <br />
-                <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%] dark:bg-[#424242]" id="schoolName" placeholder="학교 이름" onKeyUp={async (e) => {
-                    if (e.currentTarget.value.length < 1) return;
-                    const schoolList = await fetch(`/api/search?name=${e.currentTarget.value}`).then(res => res.json());
-                    setSchoolList(schoolList.data || []);
-                }} tabIndex={2} />
-                {schoolList.length > 0 &&
-                    <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
-                        {schoolList.map((school: ({ name: string, code: number }), i) => (
-                            <div key={i} tabIndex={i + 3} className={`pt-3 pl-3 pb-3 border-b border-slate-400 cursor-pointer ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} onClick={() => {
-                                setTmpSchool(school);
-                                setPhase(2);
-                            }}>
-                                {school.name}
-                            </div>
-                        ))}
-                    </div>
-                }
+                <Image src="/offline.svg" alt="오프라인 상태" width={150} height={150} className="mt-2 mb-8 ml-auto mr-auto dark:invert" />
+                <h2>오프라인 상태입니다.</h2>
+                <p>시간표를 추가하려면 인터넷 연결이 필요합니다.</p>
             </div>
         </main>
-    ) : (
-        <AddClass2 school={tmpSchool} addedClasses={addedClasses} setAddedClasses={setAddedClasses} setPhase={setPhase} />
-    );
+    )
+        : (phase === 1 ? (
+            <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
+                <div className="border border-slate-300 rounded p-8">
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        router.back();
+                    }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" tabIndex={1} /></button>
+                    <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
+                    <br />
+                    <p>학교를 먼저 선택하세요.</p>
+                    <br />
+                    <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%] dark:bg-[#424242]" id="schoolName" placeholder="학교 이름" onKeyUp={async (e) => {
+                        if (e.currentTarget.value.length < 1) return;
+                        const schoolList = await fetch(`/api/search?name=${e.currentTarget.value}`).then(res => res.json());
+                        setSchoolList(schoolList.data || []);
+                    }} tabIndex={2} />
+                    {schoolList.length > 0 &&
+                        <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
+                            {schoolList.map((school: ({ name: string, code: number }), i) => (
+                                <div key={i} tabIndex={i + 3} className={`pt-3 pl-3 pb-3 border-b border-slate-400 cursor-pointer ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} onClick={() => {
+                                    setTmpSchool(school);
+                                    setPhase(2);
+                                }}>
+                                    {school.name}
+                                </div>
+                            ))}
+                        </div>
+                    }
+                </div>
+            </main>
+        ) : (
+            <AddClass2 school={tmpSchool} addedClasses={addedClasses} setAddedClasses={setAddedClasses} setPhase={setPhase} />
+        ));
 }
 
 const AddClass2: React.FC<{
@@ -72,21 +111,25 @@ const AddClass2: React.FC<{
     const [classNum, setClassNum] = useState(-1);
     const [schoolInfo, setSchoolInfo] = useState({ lastUpdated: new Date(0), data: { grades: 0, classes: [] } });
     const [classSelection, setClassSelection] = useLocalStorage("classSelection", 0);
+
     useEffect(() => {
         const fetchSchoolInfo = async () => {
             const result = await getSchoolInfo(school.code);
             setSchoolInfo(result.data);
         };
-
         fetchSchoolInfo();
     }, [school]);
+    useEffect(() => {
+        localforage.setItem("classSelection", classSelection);
+    }, [classSelection]);
+
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
             <div className="border border-slate-300 rounded p-8">
                 <button onClick={(e) => {
                     e.preventDefault();
                     setPhase(1);
-                    
+
                 }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
