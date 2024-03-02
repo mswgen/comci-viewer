@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v2';
+const CACHE_NAME = 'cache-v3';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -18,6 +18,24 @@ self.addEventListener('activate', event => {
             );
         })
     );
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil((async () => {
+        localforage.config({
+            version: 2
+        });
+        const addedClasses = await localforage.getItem('addedClasses');
+        return addedClasses.map(addedClass => {
+            return fetch(`/api/getTimetable?code=${addedClass.school.code}&grade=${addedClass.grade + 1}&classNum=${addedClass.classNum + 1}`).then(async response => {
+                if (!response.ok) return;
+                const resClone = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    return cache.put(`/api/getTimetable?code=${addedClass.school.code}&grade=${addedClass.grade + 1}&classNum=${addedClass.classNum + 1}`, resClone);
+                });
+            });
+        });
+    })());
 });
 
 self.addEventListener('activate', event => {
@@ -122,7 +140,6 @@ self.addEventListener('notificationclick', async event => {
             version: 2
         });
         if (event.notification.tag !== '시간표 변경') return;
-        (await localforage.getItem('addedClasses')).find(x => x.school.code === event.notification.data.code && x.grade === event.notification.data.grade && x.classNum === event.notification.data.classNum);
         const addedClasses = await localforage.getItem('addedClasses');
         await localforage.setItem('classSelection', addedClasses.map(x => `${x.school.code}-${x.grade}-${x.classNum}`).indexOf(`${event.notification.data.code}-${event.notification.data.grade}-${event.notification.data.classNum}`));
         return clients.openWindow('/');
