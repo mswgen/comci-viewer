@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        background_color: '#333333',
+        background_color: 'white',
         categories: ['education', 'utilities'],
         description: '컴시간 뷰어',
         display: 'standalone',
@@ -39,6 +39,6 @@ export default function manifest(): MetadataRoute.Manifest {
         scope: '/',
         short_name: '컴시간 뷰어',
         start_url: '/',
-        theme_color: '#333333'
+        theme_color: 'white'
     }
 }
