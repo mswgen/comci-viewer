@@ -32,15 +32,15 @@ const Home: React.FC = () => {
             const classSelection = await localforage.getItem("classSelection");
             return classSelection;
         }
+        if (classSelectionInit) return;
         getIndexedDBClassSelection().then(IDClassSelection => {
             if (typeof IDClassSelection === 'number' && IDClassSelection !== classSelection) setClassSelection(IDClassSelection);
             setClassSelectionInit(true);
         });
-    }, [classSelection, setClassSelection]);
+    }, [classSelection, setClassSelection, classSelectionInit]);
     useEffect(() => {
         if (classSelectionInit) {
             localforage.setItem("classSelection", classSelection);
-            setClassSelectionInit(false);
         }
     }, [classSelection, classSelectionInit]);
     useEffect(() => {
