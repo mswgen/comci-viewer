@@ -1,9 +1,9 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v1';
+const CACHE_NAME = 'cache-v2';
 
 self.addEventListener('install', event => {
-    skipWaiting();
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
@@ -103,7 +103,12 @@ self.addEventListener('periodicsync', event => {
                 self.registration.showNotification(`${(await localforage.getItem('addedClasses')).find(x => x.school.code === parseInt(event.tag.split('-')[1]) && x.grade === parseInt(event.tag.split('-')[2]) && x.classNum == parseInt(event.tag.split('-')[3])).school.name} 시간표 변경`, {
                     body: '알림을 눌러 변경된 시간표를 확인하세요.',
                     icon: '/icon1.png',
-                    tag: `timetable-${event.tag.split('-')[1]}-${event.tag.split('-')[2]}-${event.tag.split('-')[3]}-${Date.now()}`
+                    tag: '시간표 변경',
+                    data: {
+                        code: parseInt(event.tag.split('-')[1]),
+                        grade: parseInt(event.tag.split('-')[2]),
+                        classNum: parseInt(event.tag.split('-')[3])
+                    }
                 });
             }
         })
@@ -116,9 +121,10 @@ self.addEventListener('notificationclick', async event => {
         localforage.config({
             version: 2
         });
-        console.log((await localforage.getItem('addedClasses')).find(x => x.school.code === parseInt(event.notification.tag.split('-')[1]) && x.grade === parseInt(event.notification.tag.split('-')[2]) && x.classNum === parseInt(event.notification.tag.split('-')[3])))
+        if (event.notification.tag !== '시간표 변경') return;
+        (await localforage.getItem('addedClasses')).find(x => x.school.code === event.notification.data.code && x.grade === event.notification.data.grade && x.classNum === event.notification.data.classNum);
         const addedClasses = await localforage.getItem('addedClasses');
-        await localforage.setItem('classSelection', addedClasses.map(x => `${x.school.code}-${x.grade}-${x.classNum}`).indexOf(event.notification.tag.split('-').slice(1, 4).join('-')));
+        await localforage.setItem('classSelection', addedClasses.map(x => `${x.school.code}-${x.grade}-${x.classNum}`).indexOf(`${event.notification.data.code}-${event.notification.data.grade}-${event.notification.data.classNum}`));
         return clients.openWindow('/');
     })());
 });
