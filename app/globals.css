@@ -5,6 +5,7 @@
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
+  --viewport-width: 100vw;
 }
 
 @media (prefers-color-scheme: dark) {

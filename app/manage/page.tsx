@@ -52,8 +52,8 @@ const ManageClasses: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
-                <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
+                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
+                <h1 className="text-center text-v3xl ml-12">시간표 관리하기</h1>
                 <br />
                 <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
                     {addedClasses.map((addedClass: LSClass, i) => (
@@ -95,9 +95,9 @@ const ManageClasses: React.FC = () => {
                                     }
                                 }}>
                                     {notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum) ? (
-                                        <Image src="notification-off.svg" alt="알림 해제" width={24} height={24} className="mr-3" />
+                                        <Image src="/notification-off.svg" alt="알림 해제" width={24} height={24} className="mr-3" />
                                     ) : (
-                                        <Image src="notification.svg" alt="알림 해제" width={24} height={24} className="mr-3 dark:invert" />
+                                        <Image src="/notification.svg" alt="알림 해제" width={24} height={24} className="mr-3 dark:invert" />
                                     )}
                                 </button>
                                 <button onClick={(e) => {
@@ -107,7 +107,7 @@ const ManageClasses: React.FC = () => {
                                         if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) setNotification(notification.filter(x => x.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                     }
                                 }}>
-                                    <Image src="remove.svg" alt="삭제" width={24} height={24} className="mr-3 dark:invert" />
+                                    <Image src="/remove.svg" alt="삭제" width={24} height={24} className="mr-3 dark:invert" />
                                 </button>
                             </div>
                         </div>
@@ -127,8 +127,8 @@ const ManageClasses: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
-                <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
+                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
+                <h1 className="text-center text-v3xl ml-12">시간표 관리하기</h1>
                 <br />
                 <p>현재 추가된 시간표가 없습니다.</p>
                 <Link href="/add">

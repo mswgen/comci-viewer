@@ -71,7 +71,7 @@ const AddClass: React.FC = () => {
                     <button onClick={(e) => {
                         e.preventDefault();
                         router.back();
-                    }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" tabIndex={1} /></button>
+                    }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" tabIndex={1} /></button>
                     <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                     <br />
                     <p>학교를 먼저 선택하세요.</p>
@@ -113,11 +113,13 @@ const AddClass2: React.FC<{
     const [classSelection, setClassSelection] = useLocalStorage("classSelection", 0);
 
     useEffect(() => {
+        let isValid = true;
         const fetchSchoolInfo = async () => {
             const result = await getSchoolInfo(school.code);
-            setSchoolInfo(result.data);
+            if (isValid) setSchoolInfo(result.data);
         };
         fetchSchoolInfo();
+        return () => { isValid = false; };
     }, [school]);
     useEffect(() => {
         localforage.setItem("classSelection", classSelection);
@@ -130,7 +132,7 @@ const AddClass2: React.FC<{
                     e.preventDefault();
                     setPhase(1);
 
-                }}><Image src="back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
+                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
                 <p>학년, 반을 선택하세요.</p>

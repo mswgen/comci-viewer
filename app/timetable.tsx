@@ -8,7 +8,7 @@ import type { Timetable } from 'comci.js';
 
 type LSClass = {
     school: {
-        name: string,
+        name?: string,
         code: number
     },
     grade: number,
@@ -85,7 +85,7 @@ const Timetable: React.FC<{
     return (
         <>
             <br />
-            <h2 className="font-bold text-xl">{classData.school.name} {classData.grade + 1}학년 {classData.classNum + 1}반</h2>
+            <h2 className="font-bold text-xl">{classData.school.name || `학교 코드 ${classData.school.code}`} {classData.grade + 1}학년 {classData.classNum + 1}반</h2>
             <p>{`${timetable.date.start[0]}년 ${timetable.date.start[1]}월 ${timetable.date.start[2]}일~${timetable.date.end[0]}년 ${timetable.date.end[1]}월 ${timetable.date.end[2]}일`}</p>
             <p>마지막 업데이트: {new Date(timetable.lastUpdated).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}{isOffline ? (
                 <span className="text-red-500"> (오프라인 모드)</span>

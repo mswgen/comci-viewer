@@ -73,7 +73,7 @@ const Home: React.FC = () => {
                         <span />
                         <Link href="/manage">
                             <button>
-                                <Image src="settings.svg" alt="시간표 관리하기" width={24} height={24} className="dark:invert" />
+                                <Image src="/settings.svg" alt="시간표 관리하기" width={24} height={24} className="dark:invert" />
                             </button>
                         </Link>
                     </div>
