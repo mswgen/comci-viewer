@@ -30,6 +30,7 @@ self.addEventListener('activate', event => {
                 '/remove.svg',
                 '/settings.svg',
                 '/notification.svg',
+                '/notification-off.svg',
                 '/localforage.min.js',
                 '/',
                 '/add',
