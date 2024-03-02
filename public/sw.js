@@ -97,7 +97,7 @@ self.addEventListener('periodicsync', event => {
             localforage.config({
                 version: 2
             });
-            const isNotificationEnabled = (await localforage.getItem('notification') || { "notification": [] }).notification;
+            const isNotificationEnabled = (await localforage.getItem('notification') || []);
             if (isNotificationEnabled.some(n => n.code === parseInt(event.tag.split('-')[1]) && n.grade === parseInt(event.tag.split('-')[2]) && n.classNum === parseInt(event.tag.split('-')[3]))) {
                 self.registration.showNotification(`${(await localforage.getItem('addedClasses')).find(x => x.school.code === parseInt(event.tag.split('-')[1]) && x.grade === parseInt(event.tag.split('-')[2]) && x.classNum == parseInt(event.tag.split('-')[3])).school.name} 시간표 변경`, {
                     body: '알림을 눌러 변경된 시간표를 확인하세요.',
@@ -117,7 +117,7 @@ self.addEventListener('notificationclick', async event => {
         });
         console.log((await localforage.getItem('addedClasses')).find(x => x.school.code === parseInt(event.notification.tag.split('-')[1]) && x.grade === parseInt(event.notification.tag.split('-')[2]) && x.classNum === parseInt(event.notification.tag.split('-')[3])))
         const addedClasses = await localforage.getItem('addedClasses');
-        await localforage.setItem('classSelection', addedClasses.map(x => `${x.school.code}-${x.grade}-${x.classNum}`).indexOf(event.notification.tag.replace('timetable-', '')));
+        await localforage.setItem('classSelection', addedClasses.map(x => `${x.school.code}-${x.grade}-${x.classNum}`).indexOf(event.notification.tag.split('-').slice(1, 4).join('-')));
         return clients.openWindow('/');
     })());
 });
