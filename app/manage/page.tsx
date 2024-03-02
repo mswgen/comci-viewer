@@ -62,7 +62,8 @@ const ManageClasses: React.FC = () => {
                                 <p>{addedClass.school.name} {addedClass.grade + 1}학년 {addedClass.classNum + 1}반</p>
                                 <div className="min-w-12" />
                                 <button onClick={async (e) => {
-                                    if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum) && confirm('알림을 해제하시겠습니까?')) {
+                                    if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) {
+                                        if (!confirm('알림을 해제하시겠습니까?')) return;
                                         setNotification(notification.filter(x => x.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                     } else {
                                         if (!('Notification' in window)) {
