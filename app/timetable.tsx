@@ -76,7 +76,7 @@ const Timetable: React.FC<{
                 setHasCache(false);
             }
         }
-        if (!isOffline) fetchTimetable();
+        fetchTimetable();
     }, [classData, isOffline]);
     useEffect(() => {
         (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + Math.min(1, screen.width / 697))
