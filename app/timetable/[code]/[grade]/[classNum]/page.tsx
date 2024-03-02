@@ -12,7 +12,7 @@ const CustomTimetable: React.FC<{
             <div className="border border-slate-300 rounded p-8">
                 <h1 className="text-center text-3xl">컴시간 뷰어</h1>
                 <br />
-                <Timetable classData={({ school: { code: parseInt(params.code) }, grade: parseInt(params.grade) + 1, classNum: parseInt(params.classNum) + 1 })} />
+                <Timetable classData={({ school: { code: parseInt(params.code) }, grade: parseInt(params.grade) - 1, classNum: parseInt(params.classNum) - 1 })} />
             </div>
         </main>
     );
