@@ -8,9 +8,28 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export const metadata: Metadata = {
-  title: '컴시간 뷰어',
-  description: '컴시간 뷰어'
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+      title: {
+        default: `컴시간 뷰어`,
+        template: '컴시간 뷰어 - %s'
+      },
+      description: '컴시간 뷰어',
+      keywords: ['컴시간', '시간표', '뷰어'],
+      metadataBase: new URL(process.env.URL!),
+      twitter: {
+          title: `컴시간 뷰어`,
+          description: '컴시간 뷰어'
+      },
+      openGraph: {
+          title: `컴시간 뷰어`,
+          description: '컴시간 뷰어',
+          type: 'website',
+          url: `${process.env.URL!}`,
+          siteName: '컴시간 뷰어',
+          locale: 'ko_KR'
+      }
+  };
 }
 
 export const viewport: Viewport = {

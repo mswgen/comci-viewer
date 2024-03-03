@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v7';
+const CACHE_NAME = 'cache-v10';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -13,29 +13,28 @@ self.addEventListener('activate', event => {
                 cacheNames
                     .filter(cacheName => cacheName !== CACHE_NAME)
                     .map(cacheName => {
-                        return caches.delete(cacheName);
+                        return caches.open(cacheName).then(cache => {
+                            return cache.keys().then(keys => {
+                                return Promise.all(
+                                    keys.map(request => {
+                                        if (request.url.includes('/api/getTimetable')) {
+                                            return caches.open(CACHE_NAME).then(async newCache => {
+                                                return newCache.put(request, (await cache.match(request)).clone()).then(() => {
+                                                    return cache.delete(request);
+                                                });
+                                            });
+                                        } else return cache.delete(request);
+                                    })
+                                ).finally(() => {
+                                    console.log(cacheName);
+                                    return caches.delete(cacheName)
+                                });
+                            });
+                        });
                     })
             );
         })
     );
-});
-
-self.addEventListener('activate', event => {
-    event.waitUntil((async () => {
-        localforage.config({
-            version: 2
-        });
-        const addedClasses = await localforage.getItem('addedClasses');
-        return addedClasses.map(addedClass => {
-            return fetch(`/api/getTimetable?code=${addedClass.school.code}&grade=${addedClass.grade + 1}&classNum=${addedClass.classNum + 1}`).then(async response => {
-                if (!response.ok) return;
-                const resClone = response.clone();
-                caches.open(CACHE_NAME).then(cache => {
-                    return cache.put(`/api/getTimetable?code=${addedClass.school.code}&grade=${addedClass.grade + 1}&classNum=${addedClass.classNum + 1}`, resClone);
-                });
-            });
-        });
-    })());
 });
 
 self.addEventListener('activate', event => {

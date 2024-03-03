@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import subjectNameSubstitutesOrig from './subjectNames.json';
+import subjectNameSubstitutesOrig from './subjectNames';
 
 const subjectNameSubstitutes: { [key: string]: string } = subjectNameSubstitutesOrig.subjectNameSubstitutes;
 const subjectCategories: { [key: string]: Array<string> } = subjectNameSubstitutesOrig.subjectCategories;
@@ -33,13 +33,13 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                     <p className={`font-bold text-2xl mr-3 ${data.lesson.subject == '' && 'text-gray-400 dark:text-gray-500'}`}>{data.lesson.subject == '' ? '수업 없음' : (
                         Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
-                        }, data.lesson.subject)
+                        }, data.lesson.subject.toUpperCase())
                     )}</p>
-                    <Tag subject={
+                    {data.lesson.subject !== '' && <Tag subject={
                         Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
-                        }, data.lesson.subject)
-                    } />
+                        }, data.lesson.subject.toUpperCase())
+                    } />}
                     <div />
                 </div>
                 {
@@ -54,12 +54,12 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                                 <div className="grid grid-cols-[auto_auto_1fr]">
                                     <p className="font-bold text-2xl mr-3">{Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                                         return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
-                                    }, data.lesson.prevData.subject)}</p>
-                                    <Tag subject={
+                                    }, data.lesson.prevData.subject.toUpperCase())}</p>
+                                    {data.lesson.prevData.subject !== '' && <Tag subject={
                                         Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
-                                        }, data.lesson.prevData.subject)
-                                    } />
+                                        }, data.lesson.prevData.subject.toUpperCase())
+                                    } />}
                                     <div />
                                 </div>
                                 <p>{data.lesson.prevData.teacher} 선생님</p>

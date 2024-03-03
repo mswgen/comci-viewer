@@ -4,6 +4,7 @@ import localforage from 'localforage';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import Dialog from '../dialog';
 
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
@@ -25,6 +26,11 @@ const ManageClasses: React.FC = () => {
     const [isClient, setIsClient] = useState(false);
     // @ts-ignore
     const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+    const [showDialog, setShowDialog] = useState(false);
+    const [dialogTitle, setDialogTitle] = useState('');
+    const [dialogContent, setDialogContent] = useState('');
+    const [dialogType, setDialogType] = useState<'alert' | 'confirm'>('alert');
+    const [dialogCallback, setDialogCallback] = useState<{ callback: (result: boolean) => void }>({ callback: () => { } });
     const router = useRouter();
 
     useEffect(() => {
@@ -46,6 +52,20 @@ const ManageClasses: React.FC = () => {
     }, []);
 
 
+    function afterConfirm(addedClass: LSClass) {
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                setNotification([...notification, { code: addedClass.school.code, grade: addedClass.grade, classNum: addedClass.classNum }]);
+            } else {
+                setDialogTitle('알림을 설정할 수 없음');
+                setDialogContent('알림이 차단되어 알림을 설정할 수 없습니다.');
+                setDialogType('alert');
+                setShowDialog(true);
+            }
+        });
+    }
+
+
     return (addedClasses.length > 0 && isClient) ? (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
             <div className="border border-slate-300 rounded p-8">
@@ -63,34 +83,54 @@ const ManageClasses: React.FC = () => {
                                 <div className="min-w-12" />
                                 <button onClick={async (e) => {
                                     if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) {
-                                        if (!confirm('알림을 해제하시겠습니까?')) return;
                                         setNotification(notification.filter(x => x.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                     } else {
                                         if (!('Notification' in window)) {
-                                            alert('이 브라우저는 알림을 지원하지 않습니다.');
+                                            setDialogTitle('알림을 설정할 수 없음');
+                                            setDialogContent('이 브라우저는 알림을 지원하지 않습니다.');
+                                            setDialogType('alert');
+                                            setShowDialog(true);
                                             return;
                                         }
                                         if (window.matchMedia('(display-mode: standalone)').matches) {
-                                            if (Notification.permission === 'denied') {
-                                                alert('알림이 차단되어 있습니다. 사이트 설정에서 알림을 허용해주세요.');
-                                                return;
-                                            }
-                                            if (confirm(`알림을 설정하시겠습니까?${Notification.permission === 'default' ? ' 설정하려면 확인을 누른 다음 알림을 허용해주세요.' : ''}`)) {
-                                                Notification.requestPermission().then((permission) => {
-                                                    if (permission === 'granted') {
-                                                        setNotification([...notification, { code: addedClass.school.code, grade: addedClass.grade, classNum: addedClass.classNum }]);
-                                                    } else {
-                                                        alert('알림이 차단되어 알림을 설정할 수 없습니다.');
-                                                    }
-                                                });
+                                            switch (Notification.permission) {
+                                                case 'denied':
+                                                    setDialogTitle('알림을 설정할 수 없음');
+                                                    setDialogContent('알림이 차단되어 있습니다.\n브라우저 설정에서 알림을 허용해주세요.');
+                                                    setDialogType('alert');
+                                                    setShowDialog(true);
+                                                    break;
+                                                case 'granted':
+                                                    afterConfirm(addedClass);
+                                                    break;
+                                                case 'default':
+                                                    setDialogTitle('알림 설정하기');
+                                                    setDialogContent('알림을 허용하면 시간표 변경 알림을 받을 수 있습니다.\n알림을 설정하려면 확인을 누른 다음 알림을 허용해주세요.\n\n저희는 광고를 보내지 않아요.');
+                                                    setDialogType('confirm');
+                                                    setDialogCallback({
+                                                        callback: (result: boolean) => {
+                                                            if (result) {
+                                                                afterConfirm(addedClass);
+                                                            }
+                                                        }
+                                                    });
+                                                    setShowDialog(true);
+                                                    break;
                                             }
                                         } else {
-                                            alert('브라우저 제약으로 인해 앱을 설치해야 알림을 받을 수 있습니다. 앱이 설치되어 있다면 앱에서 실행해주세요.');
-                                            if (!installPrompt) return;
-                                            const installResult = await installPrompt.prompt();
-                                            if (installResult.outcome === 'accepted') {
-                                                setInstallPrompt(null);
-                                            }
+                                            setDialogTitle('앱 설치 필요');
+                                            setDialogContent('브라우저 제약으로 인해 알림을 받으러면 앱 설치가 필요합니다.\n앱이 설치되어 있다면 앱에서 실행해주세요.');
+                                            setDialogType('alert');
+                                            setDialogCallback({
+                                                callback: async () => {
+                                                    if (!installPrompt) return;
+                                                    const installResult = await installPrompt.prompt();
+                                                    if (installResult.outcome === 'accepted') {
+                                                        setInstallPrompt(null);
+                                                    }
+                                                }
+                                            });
+                                            setShowDialog(true);
                                         }
                                     }
                                 }}>
@@ -101,7 +141,19 @@ const ManageClasses: React.FC = () => {
                                     )}
                                 </button>
                                 <button onClick={(e) => {
-                                    if (confirm(`${notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum) ? '시간표를 삭제하면 변경 알림도 해제됩니다. ' : ''}정말 삭제하시겠습니까?`)) {
+                                    const hasNotification = notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)
+                                    if (hasNotification) {
+                                        setDialogTitle('시간표 삭제 확인');
+                                        setDialogContent('시간표를 삭제하면 시간표 변경 알림을 받을 수 없습니다.\n정말 삭제하시겠습니까?');
+                                        setDialogType('confirm');
+                                        setDialogCallback({
+                                            callback: (result: boolean) => {
+                                                if (result) afterDeleteConfirm();
+                                            }
+                                        });
+                                        setShowDialog(true);
+                                    } else afterDeleteConfirm();
+                                    function afterDeleteConfirm() {
                                         if (classSelection >= addedClasses.length - 1) setClassSelection(addedClasses.length - 2);
                                         setAddedClasses(addedClasses.filter((x) => x.school.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                         if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) setNotification(notification.filter(x => x.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
@@ -119,8 +171,9 @@ const ManageClasses: React.FC = () => {
                         시간표 추가하기
                     </button>
                 </Link>
+                {showDialog && <Dialog title={dialogTitle} content={dialogContent} type={dialogType} setShowDialog={setShowDialog} callback={dialogCallback.callback} />}
             </div>
-        </main>
+        </main >
     ) : (
         <main className="flex min-h-screen flex-col items-center justify-between p-12 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
             <div className="border border-slate-300 rounded p-8">
