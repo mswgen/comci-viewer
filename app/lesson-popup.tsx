@@ -46,7 +46,7 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                     data.lesson.teacher ? <p>{data.lesson.teacher} 선생님</p> : null
                 }
                 {
-                    data.lesson.prevData && (
+                    data.lesson.prevData && Object.keys(data.lesson.prevData).length > 0 && (
                         <div className="border-slate-400 border rounded-lg mt-4 p-4">
                             <div className="p-3">
                                 <p className="text-sm text-gray-400 dark:text-gray-500 mr-8">시간표 변경 전 수업</p>
