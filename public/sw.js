@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v11';
+const CACHE_NAME = 'cache-v12';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -26,7 +26,6 @@ self.addEventListener('activate', event => {
                                         } else return cache.delete(request);
                                     })
                                 ).finally(() => {
-                                    console.log(cacheName);
                                     return caches.delete(cacheName)
                                 });
                             });

@@ -69,17 +69,23 @@ const Home: React.FC = () => {
                     <h1 className="text-center text-3xl">컴시간 뷰어</h1>
                     <br />
                     <div className="grid grid-cols-[auto_1fr_auto]">
-                        <p>시간표를 선택하세요.</p>
+                        <div className="grid grid-rows-[1fr_auto_1fr]">
+                            <div />
+                            <p>시간표를 선택하세요.</p>
+                            <div />
+                        </div>
                         <span />
                         <Link href="/manage">
-                            <button>
-                                <Image src="/settings.svg" alt="시간표 관리하기" width={24} height={24} className="dark:invert" />
+                            <button className="grid grid-cols-[1fr_auto_1fr]">
+                                <div />
+                                <Image src="/settings.svg" alt="시간표 관리하기" width={24} height={24} className="dark:invert max-w-8 max-h-8" />
+                                <div />
                             </button>
                         </Link>
                     </div>
                     <br />
                     <label htmlFor="grade" className="block w-0 h-0">시간표 선택</label>
-                    <select className="border border-slate-400 h-12 rounded-lg p-4 pt-2 mr-2 w-[100%] dark:bg-[#424242]" id="grade" defaultValue={classSelection} onChange={(e) => {
+                    <select className="border border-slate-400 h-12 rounded-lg p-4 pt-0 pb-0 mr-2 w-[100%] dark:bg-[#424242]" id="grade" defaultValue={classSelection} onChange={(e) => {
                         setClassSelection(parseInt(e.currentTarget.value));
                     }}>
                         {

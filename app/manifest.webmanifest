@@ -1,0 +1,102 @@
+{
+    "background_color": "white",
+    "categories": ["education", "utilities"],
+    "description": "컴시간 뷰어",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/icon1.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icon2.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/icon3.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icon4.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "id": "comci-viewer",
+    "name": "컴시간 뷰어",
+    "dir": "ltr",
+    "lang": "ko-KR",
+    "scope": "/",
+    "short_name": "컴시간 뷰어",
+    "start_url": "/",
+    "theme_color": "white",
+    "screenshots": [
+        {
+            "src": "/screenshot1.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot2.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot3.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot4.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot5.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot1.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot2.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot3.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot4.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot5.png",
+            "sizes": "1003x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ]
+}

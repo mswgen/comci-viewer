@@ -26,7 +26,7 @@ async function isOnline() {
 
 function Card({ content1, content2, grayText, gradient, onClickEvent }: { content1: string, content2?: string, grayText?: boolean, gradient?: boolean, onClickEvent?: (e: React.MouseEvent<HTMLDivElement>) => void }) {
     return (
-        <div className={`${gradient && `bg-gradient-to-br from-slate-300 to-white dark:from-slate-800 dark:to-black`} rounded-lg p-2 mb-2 w-[90.86px] whitespace-nowrap cursor-pointer`} onClick={onClickEvent}>
+        <div className={`${gradient && `bg-gradient-to-br from-slate-300 to-white dark:from-slate-800 dark:to-black`} rounded-lg p-2 mb-2 whitespace-nowrap cursor-pointer`} onClick={onClickEvent}>
             {
                 content1 == '' ? <div className="h-5" /> : <p className={`font-bold text-lg ${grayText && 'text-gray-400 dark:text-gray-500'}`}>{content1}</p>
             }
@@ -78,9 +78,6 @@ const Timetable: React.FC<{
         }
         fetchTimetable();
     }, [classData, isOffline]);
-    useEffect(() => {
-        (document.querySelector('meta[name="viewport"]') as HTMLMetaElement).setAttribute('content', 'width=device-width, initial-scale=' + Math.min(1, screen.width / 697))
-    });
 
     return (
         <>

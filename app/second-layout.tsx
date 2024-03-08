@@ -74,8 +74,8 @@ export default function SecondLayout({
 
   if (isSiteCodeChanged) {
     return (
-      <html lang="ko" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
-        <body className={NotoSansKR.className}>
+      <html lang="ko" className="text-variable" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
+        <body>
           <main className="flex min-h-screen flex-col items-center justify-between p-12">
             <div className="border border-slate-300 rounded p-8">
               <h1 className="text-center text-3xl">데이터를 가져올 수 없음</h1>
@@ -89,8 +89,8 @@ export default function SecondLayout({
     );
   }
   return (
-    <html lang="ko" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
-      <body className={NotoSansKR.className}>
+    <html lang="ko" className="text-variable" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
+      <body>
         {children}
       </body>
     </html>

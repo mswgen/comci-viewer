@@ -24,8 +24,8 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                 <button onClick={(e) => {
                     e.preventDefault();
                     setIsOpen(false);
-                }}><Image src="/close.svg" alt="닫기" height={36} width={36} className="absolute mt-[.1rem] -ml-2 dark:invert" tabIndex={1} /></button>
-                <h1 className="text-center text-xl -ml-8">상세정보</h1>
+                }}><Image src="/close.svg" alt="닫기" height={36} width={36} className="absolute mt-[.1rem] -ml-2 dark:invert w-9 h-9" tabIndex={1} /></button>
+                <h1 className="text-xl ml-10">상세정보</h1>
                 <br />
                 <p>{['월', '화', '수', '목', '금'][data.day]}요일 {data.nth + 1}교시</p>
                 <br />
@@ -40,29 +40,32 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
                         }, data.lesson.subject.toUpperCase())
                     } />}
-                    <div />
                 </div>
                 {
                     data.lesson.teacher ? <p>{data.lesson.teacher} 선생님</p> : null
                 }
                 {
-                    data.lesson.prevData && Object.keys(data.lesson.prevData).length > 0 && (
+                    data.lesson.prevData && (
                         <div className="border-slate-400 border rounded-lg mt-4 p-4">
                             <div className="p-3">
                                 <p className="text-sm text-gray-400 dark:text-gray-500 mr-8">시간표 변경 전 수업</p>
                                 <br />
                                 <div className="grid grid-cols-[auto_auto_1fr]">
-                                    <p className="font-bold text-2xl mr-3">{Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
-                                        return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
-                                    }, data.lesson.prevData.subject.toUpperCase())}</p>
-                                    {data.lesson.prevData.subject !== '' && <Tag subject={
+                                    <p className={`font-bold text-2xl mr-3 ${Object.keys(data.lesson.prevData).length === 0 && 'text-gray-400 dark:text-gray-500'}`}>
+                                        {Object.keys(data.lesson.prevData).length === 0 ? '수업 없음' : (
+                                            Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
+                                                return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
+                                            }, data.lesson.prevData.subject.toUpperCase())
+                                        )}
+                                    </p>
+                                    {Object.keys(data.lesson.prevData).length > 0 && <Tag subject={
                                         Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
                                         }, data.lesson.prevData.subject.toUpperCase())
                                     } />}
                                     <div />
                                 </div>
-                                <p>{data.lesson.prevData.teacher} 선생님</p>
+                                {Object.keys(data.lesson.prevData).length > 0 && <p>{data.lesson.prevData.teacher} 선생님</p>}
                             </div>
                         </div>
                     )

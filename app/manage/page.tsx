@@ -56,6 +56,10 @@ const ManageClasses: React.FC = () => {
         Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
                 setNotification([...notification, { code: addedClass.school.code, grade: addedClass.grade, classNum: addedClass.classNum }]);
+                setDialogTitle('알림 설정 완료');
+                setDialogContent(`알림을 설정했습니다.\n\n브라우저 제약으로 인해 현재 상태로는 알림 받기를 위한 동기화가 2~3일에 한 번 이루어집니다.\n동기화 간격을 6시간으로 줄이려면\n앱을 설치한 브라우저를 열고\n주소창에 chrome://site-engagement를 입력해 접속한 다음\n${location.origin}을 찾고\n그 옆에 있는 숫자(Base 값)를 100으로 수정해주세요.\n\n이후에도 주기적으로 앱을 실행해야 합니다.`);
+                setDialogType('alert');
+                setShowDialog(true);
             } else {
                 setDialogTitle('알림을 설정할 수 없음');
                 setDialogContent('알림이 차단되어 알림을 설정할 수 없습니다.');
@@ -72,14 +76,18 @@ const ManageClasses: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert" /></button>
+                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert w-9 h-9" /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
                 <br />
                 <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
                     {addedClasses.map((addedClass: LSClass, i) => (
                         <div key={i} className={`pt-3 pl-3 pb-3 border-b border-slate-400 ${i === addedClasses.length - 1 ? 'rounded-lg' : ''}`}>
                             <div className="grid grid-cols-[auto_1fr_auto_auto]">
-                                <p>{addedClass.school.name} {addedClass.grade + 1}학년 {addedClass.classNum + 1}반</p>
+                                <div className="grid grid-rows-[1fr_auto_1fr]">
+                                    <div />
+                                    <p>{addedClass.school.name} {addedClass.grade + 1}학년 {addedClass.classNum + 1}반</p>
+                                    <div />
+                                </div>
                                 <div className="min-w-12" />
                                 <button onClick={async (e) => {
                                     if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) {
@@ -135,9 +143,9 @@ const ManageClasses: React.FC = () => {
                                     }
                                 }}>
                                     {notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum) ? (
-                                        <Image src="/notification-off.svg" alt="알림 해제" width={24} height={24} className="mr-3" />
+                                        <Image src="/notification-off.svg" alt="알림 해제" width={24} height={24} className="mr-3 w-7 h-7" />
                                     ) : (
-                                        <Image src="/notification.svg" alt="알림 해제" width={24} height={24} className="mr-3 dark:invert" />
+                                        <Image src="/notification.svg" alt="알림 해제" width={24} height={24} className="mr-3 w-7 h-7 dark:invert" />
                                     )}
                                 </button>
                                 <button onClick={(e) => {
@@ -159,7 +167,7 @@ const ManageClasses: React.FC = () => {
                                         if (notification.some(x => x.code === addedClass.school.code && x.grade === addedClass.grade && x.classNum === addedClass.classNum)) setNotification(notification.filter(x => x.code !== addedClass.school.code || x.grade !== addedClass.grade || x.classNum !== addedClass.classNum));
                                     }
                                 }}>
-                                    <Image src="/remove.svg" alt="삭제" width={24} height={24} className="mr-3 dark:invert" />
+                                    <Image src="/remove.svg" alt="삭제" width={24} height={24} className="mr-3 w-7 h-7 dark:invert" />
                                 </button>
                             </div>
                         </div>
