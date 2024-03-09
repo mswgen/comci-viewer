@@ -1,4 +1,4 @@
-import comci from 'comci.js';
+import comcigan from 'comcigan.js';
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     }), { status: 400 });
 
     try {
-        const timetable = await comci.getTimetable(parseInt(searchParams.get('code')!), parseInt(searchParams.get('grade')!), parseInt(searchParams.get('classNum')!));
+        const timetable = await comcigan.getTimetable(parseInt(searchParams.get('code')!), parseInt(searchParams.get('grade')!), parseInt(searchParams.get('classNum')!));
         return new Response(JSON.stringify({
             code: 0,
             data: timetable

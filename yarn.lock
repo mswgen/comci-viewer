@@ -221,13 +221,6 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@types/node@^20.11.20":
-  version "20.11.23"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.23.tgz#5c156571ccb4200a2408084f472e1927d719c01e"
-  integrity sha512-ZUarKKfQuRILSNYt32FuPL20HS7XwNT7/uRwSV8tiHWfyyVwDLYZNF6DZKc2bove++pgfsXn9sUwII/OsQ82cQ==
-  dependencies:
-    undici-types "~5.26.4"
-
 "@types/prop-types@*":
   version "15.7.11"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.11.tgz#2596fb352ee96a1379c657734d4b913a613ad563"
@@ -626,15 +619,13 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-comci.js@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/comci.js/-/comci.js-1.0.4.tgz#1c5d705ebef55d7e1443aada528f93df406d61e5"
-  integrity sha512-pk00vLxudtmvQTD+S9hs/qddlAzaha2dh+yo8IrRBK5yxxaRjqpVxJGQU9mM0aJkt0oAeckDdMdqOMms2okkUA==
+comcigan.js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/comcigan.js/-/comcigan.js-1.0.0.tgz#7742fc5b870042096977ec6956ae7193dc854be3"
+  integrity sha512-YXr6ErLitlLQ38oElJqOwP589bocE/g/QpXcQxpc9EH9duAaJwUx6U9de2jQw+ROICG1x9TzNt7bHIsZGCMHBg==
   dependencies:
-    "@types/node" "^20.11.20"
     iconv-lite "^0.6.3"
     node-fetch "^3.3.2"
-    typescript "^5.3.3"
 
 commander@^4.0.0:
   version "4.1.1"
@@ -2634,7 +2625,7 @@ typed-array-length@^1.0.4:
     is-typed-array "^1.1.13"
     possible-typed-array-names "^1.0.0"
 
-typescript@^5, typescript@^5.3.3:
+typescript@^5:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
   integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==

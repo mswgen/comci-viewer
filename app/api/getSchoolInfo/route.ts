@@ -1,4 +1,4 @@
-import comci from 'comci.js';
+import comcigan from 'comcigan.js';
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     }), { status: 400 });
 
     try {
-        const school = await comci.getSchoolInfo(parseInt(searchParams.get('code')!));
+        const school = await comcigan.getSchoolInfo(parseInt(searchParams.get('code')!));
         return new Response(JSON.stringify({
             code: 0,
             data: school

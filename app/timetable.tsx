@@ -4,7 +4,7 @@ import Image from 'next/image';
 import LessonPopup from './lesson-popup';
 
 import { useState, useEffect } from 'react';
-import type { Timetable } from 'comci.js';
+import type { Timetable } from 'comcigan.js';
 
 type LSClass = {
     school: {
