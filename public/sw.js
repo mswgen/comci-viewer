@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v16';
+const CACHE_NAME = 'cache-v17';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
