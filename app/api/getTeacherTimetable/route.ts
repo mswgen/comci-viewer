@@ -8,12 +8,16 @@ export async function GET(request: Request) {
         code: 2,
         error: '학교 코드를 입력하세요.'
     }), { status: 400 });
+    if (!searchParams.has('teacher') || isNaN(parseInt(searchParams.get('teacher')!))) return new Response(JSON.stringify({
+        code: 3,
+        error: '교사 코드를 입력하세요.'
+    }), { status: 400 });
 
     try {
-        const school = await comcigan.getSchoolInfo(parseInt(searchParams.get('code')!));
+        const timetable = await comcigan.getTeacherTimetable(parseInt(searchParams.get('code')!), parseInt(searchParams.get('teacher')!));
         return new Response(JSON.stringify({
             code: 0,
-            data: school
+            data: timetable
         }));
     } catch (e: any) {
         if (e.errorCode == 1) {

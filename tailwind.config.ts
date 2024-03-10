@@ -17,7 +17,7 @@ const config: Config = {
         "12": "min(5%, 3rem)"
       },
       fontSize: {
-        "variable": "min(16px, calc(16 * min(1px, 100vw / 697)))"
+        "variable": "min(16px, calc(16 * min(1px, 100vw / var(--viewport-width))))"
       }
     },
   },

@@ -1,18 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import LessonPopup from './lesson-popup';
+import TeacherLessonPopup from './teacher-lesson-popup';
 
 import { useState, useEffect } from 'react';
-import type { Timetable } from 'comcigan.js';
+import type { TeacherTimetable } from 'comcigan.js';
 
-type LSStudentClass = {
+type LSTeacherClass = {
     school: {
         name?: string,
         code: number
     },
-    grade: number,
-    classNum: number
+    teacher: {
+        name?: string,
+        code: number
+    }
 };
 
 async function isOnline() {
@@ -38,15 +40,28 @@ function Card({ content1, content2, grayText, gradient, onClickEvent }: { conten
 }
 
 const Timetable: React.FC<{
-    classData: LSStudentClass
+    classData: LSTeacherClass
 }> = ({ classData }) => {
-    const [timetable, setTimetable] = useState<Timetable>({ lastUpdated: new Date(0), date: { start: [1970, 1, 1], end: [1970, 1, 5] }, timetable: [] });
+    const [timetable, setTimetable] = useState<TeacherTimetable>({ lastUpdated: new Date(0), date: { start: [1970, 1, 1], end: [1970, 1, 5] }, timetable: [] });
     const [isOffline, setIsOffline] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [hasCache, setHasCache] = useState(false);
-    const [selectedLesson, setSelectedLesson] = useState<{ day: number, nth: number, lesson: { subject: string, teacher: string, prevData?: { subject: string, teacher: string } } }>({ day: 0, nth: 0, lesson: { subject: '', teacher: '' } });
+    const [selectedLesson, setSelectedLesson] = useState<{
+        day: number,
+        nth: number,
+        lesson: {
+            subject: string,
+            grade: number,
+            classNum: number,
+            prevData?: {
+                subject: string,
+                grade: number,
+                classNum: number
+            }
+        }
+    }>({ day: 0, nth: 0, lesson: { subject: '', grade: 0, classNum: 0 } });
     const [isLessonPopupOpen, setIsLessonPopupOpen] = useState(false);
-    
+
     useEffect(() => {
         async function checkConnectivity() {
             if (await isOnline() && isOffline) {
@@ -65,7 +80,7 @@ const Timetable: React.FC<{
         const fetchTimetable = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch(`/api/getTimetable?code=${classData.school.code}&grade=${classData.grade + 1}&classNum=${classData.classNum + 1}`);
+                const response = await fetch(`/api/getTeacherTimetable?code=${classData.school.code}&teacher=${classData.teacher!.code + 1}`);
                 const result = await response.json();
                 setIsLoading(false);
                 setIsOffline(response.headers.has('X-Is-Cache') && response.headers.get('X-Is-Cache') === 'true');
@@ -86,7 +101,7 @@ const Timetable: React.FC<{
     return (
         <>
             <br />
-            <h2 className="font-bold text-xl">{classData.school.name || `학교 코드 ${classData.school.code}`} {classData.grade + 1}학년 {classData.classNum + 1}반</h2>
+            <h2 className="font-bold text-xl">{classData.school.name || `학교 코드 ${classData.school.code}`} {classData.teacher!.name ? `${classData.teacher!.name} 교사` : `교사 코드 ${classData.teacher!.code + 1}`}</h2>
             <p>{`${timetable.date.start[0]}년 ${timetable.date.start[1]}월 ${timetable.date.start[2]}일~${timetable.date.end[0]}년 ${timetable.date.end[1]}월 ${timetable.date.end[2]}일`}</p>
             <p>마지막 업데이트: {new Date(timetable.lastUpdated).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}{isOffline ? (
                 <span className="text-red-500"> (오프라인 모드)</span>
@@ -96,7 +111,7 @@ const Timetable: React.FC<{
                 (!isOffline || hasCache)
                     ? <div className="grid grid-cols-5 gap-0">
                         {timetable.timetable.map((content: Array<({
-                            subject: string, teacher: string, prevData?: { subject: string, teacher: string }
+                            subject: string, grade: number, classNum: number, prevData?: { subject: string, grade: number, classNum: number }
                         })>, i) => (
                             <div key={i} className="bg-gradient-to-br rounded-lg p-2">
                                 <p className="text-center font-bold text-lg mb-4">{['월', '화', '수', '목', '금'][i]}</p>
@@ -108,20 +123,18 @@ const Timetable: React.FC<{
                                         <Card content1={''} gradient={true} />
                                         <Card content1={''} gradient={true} />
                                         <Card content1={''} gradient={true} />
-                                        <Card content1={''} gradient={true} /> 
+                                        <Card content1={''} gradient={true} />
                                     </>
                                 ) : content.map((lesson, j) => (
-                                    (lesson.subject != '' ?
-                                        <Card key={j} content1={lesson.subject || '수업 없음'} content2={`${lesson.teacher} 교사`} grayText={lesson.subject ? false : true} gradient={lesson.prevData ? true : false} onClickEvent={(e) => {
+                                    (lesson.grade > 0 ?
+                                        <Card key={j} content1={lesson.grade > 0 ? `${lesson.grade}학년 ${lesson.classNum}반` : '수업 없음'} content2={lesson.subject} grayText={lesson.grade > 0 ? false : true} gradient={lesson.prevData ? true : false} onClickEvent={(e) => {
                                             setSelectedLesson({ day: i, nth: j, lesson: content[j] });
                                             setIsLessonPopupOpen(true);
                                         }} /> :
-                                        (lesson.prevData &&
-                                            <Card key={j} content1={'수업 없음'} grayText={true} gradient={true} onClickEvent={(e) => {
-                                                setSelectedLesson({ day: i, nth: j, lesson: content[j] });
-                                                setIsLessonPopupOpen(true);
-                                            }} />
-                                        )
+                                        <Card key={j} content1={'수업 없음'} grayText={true} gradient={lesson.prevData ? true : false} onClickEvent={(e) => {
+                                            setSelectedLesson({ day: i, nth: j, lesson: content[j] });
+                                            setIsLessonPopupOpen(true);
+                                        }} />
                                     )
                                 ))}
                             </div>
@@ -133,7 +146,7 @@ const Timetable: React.FC<{
                         <p>시간표를 보려면 인터넷 연결이 필요합니다.</p>
                     </div>
             }
-            {isLessonPopupOpen && <LessonPopup data={selectedLesson} setIsOpen={setIsLessonPopupOpen} />}
+            {isLessonPopupOpen && <TeacherLessonPopup data={selectedLesson} setIsOpen={setIsLessonPopupOpen} />}
         </>
     );
 };

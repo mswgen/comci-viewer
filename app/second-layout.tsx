@@ -1,6 +1,5 @@
 'use client';
 
-import { Noto_Sans_KR } from "next/font/google";
 import localforage from "localforage";
 
 import { useState, useEffect } from "react";
@@ -8,15 +7,17 @@ import { useLocalStorage } from "usehooks-ts";
 
 import "./globals.css";
 
-const NotoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
-
 type LSClass = {
-  school: {
-    name: string,
-    code: number
-  },
-  grade: number,
-  classNum: number
+    school: {
+        name: string,
+        code: number
+    },
+    grade?: number,
+    classNum?: number,
+    teacher?: {
+        name: string,
+        code: number
+    }
 };
 
 async function getSiteCodeStatus() {
@@ -55,10 +56,10 @@ export default function SecondLayout({
       try {
         const tags: Array<string> = await (registration as any).periodicSync.getTags();
         tags.forEach(async tag => {
-          if (addedClasses.some((cls) => tag === `timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`)) return;
+          if (addedClasses.filter(x => x.grade).some((cls) => tag === `timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`)) return;
           await (registration as any).periodicSync.unregister(tag);
         });
-        addedClasses.forEach(async cls => {
+        addedClasses.filter(x => x.grade).forEach(async cls => {
           if (tags.some((tag) => tag === `timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`)) return;
           await (registration as any).periodicSync.register(`timetable-${cls.school.code}-${cls.grade}-${cls.classNum}`, {
             minInterval: 60 * 60 * 1000
@@ -74,25 +75,13 @@ export default function SecondLayout({
 
   if (isSiteCodeChanged) {
     return (
-      <html lang="ko" className="text-variable" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
-        <body>
-          <main className="flex min-h-screen flex-col items-center justify-between p-12">
-            <div className="border border-slate-300 rounded p-8">
-              <h1 className="text-center text-3xl">데이터를 가져올 수 없음</h1>
-              <br />
-              <p>컴시간 사이트가 변경되어 데이터를 가져올 수 없습니다.</p>
-              <p>관리자에게 문의해주세요.</p>
-            </div>
-          </main>
-        </body>
-      </html>
+      <>
+        <h1 className="text-center text-3xl">데이터를 가져올 수 없음</h1>
+        <br />
+        <p>컴시간 사이트가 변경되어 데이터를 가져올 수 없습니다.</p>
+        <p>관리자에게 문의하세요.</p>
+      </>
     );
   }
-  return (
-    <html lang="ko" className="text-variable" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
-      <body>
-        {children}
-      </body>
-    </html>
-  );
+  return children;
 }

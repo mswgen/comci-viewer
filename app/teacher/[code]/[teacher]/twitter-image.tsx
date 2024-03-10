@@ -1,0 +1,64 @@
+import { ImageResponse } from 'next/og'
+
+// Route segment config
+export const runtime = 'edge'
+
+// Image metadata
+export const alt = '컴시간 뷰어'
+
+export const size = {
+    width: 1600,
+    height: 900,
+}
+
+export const contentType = 'image/png'
+
+// Image generation
+export default async function OpenGraphImage({ params }: { params: { code: string, teacher: string } }) {
+    // Font
+    const NotoSansKRRegular = fetch(
+        new URL(`${process.env.URL!}/NotoSansKR-Regular.ttf`)
+    ).then((res) => res.arrayBuffer())
+    const NotoSansKRBold = fetch(
+        new URL(`${process.env.URL!}/NotoSansKR-Bold.ttf`)
+    ).then((res) => res.arrayBuffer())
+
+    return new ImageResponse(
+        (
+            // ImageResponse JSX element
+            <div
+                style={{
+                    background: '#333333',
+                    width: '100%',
+                    height: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    paddingLeft: '36px',
+                    fontFamily: 'Noto Sans KR Regular'
+                }}
+            >
+                <p style={{ fontSize: '200px', color: 'white', margin: 0, fontFamily: 'Noto Sans KR Bold' }}>컴시간 뷰어</p>
+                <p style={{ fontSize: '100px', color: 'white', margin: 0, fontFamily: 'Noto Sans KR Bold' }}>교사 시간표 확인하기</p>
+                <p style={{ fontSize: '60px', color: 'lightgray', margin: 0, paddingLeft: '5px', paddingTop: '5px' }}>학교 코드 {params.code}</p>
+                <p style={{ fontSize: '60px', color: 'lightgray', margin: 0, paddingTop: '5px', paddingLeft: '5px' }}>교사 코드 {params.teacher}</p>
+            </div>
+        ),
+        // ImageResponse options
+        {
+            // For convenience, we can re-use the exported opengraph-image
+            // size config to also set the ImageResponse's width and height.
+            ...size,
+            fonts: [
+                {
+                    name: 'Noto Sans KR Regular',
+                    data: await NotoSansKRRegular
+                },
+                {
+                    name: 'Noto Sans KR Bold',
+                    data: await NotoSansKRBold
+                },
+            ],
+        }
+    )
+}

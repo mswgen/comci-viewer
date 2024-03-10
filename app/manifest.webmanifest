@@ -40,61 +40,121 @@
     "screenshots": [
         {
             "src": "/screenshot1.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "wide"
         },
         {
             "src": "/screenshot2.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "wide"
         },
         {
             "src": "/screenshot3.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "wide"
         },
         {
             "src": "/screenshot4.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "wide"
         },
         {
             "src": "/screenshot5.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot6.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot7.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot8.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot9.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshot10.png",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "wide"
         },
         {
             "src": "/screenshot1.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "narrow"
         },
         {
             "src": "/screenshot2.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "narrow"
         },
         {
             "src": "/screenshot3.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "narrow"
         },
         {
             "src": "/screenshot4.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "narrow"
         },
         {
             "src": "/screenshot5.png",
-            "sizes": "1003x1083",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot6.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot7.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot8.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot9.png",
+            "sizes": "826x1083",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/screenshot10.png",
+            "sizes": "826x1083",
             "type": "image/png",
             "form_factor": "narrow"
         }

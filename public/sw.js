@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v13';
+const CACHE_NAME = 'cache-v16';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -17,7 +17,7 @@ self.addEventListener('activate', event => {
                             return cache.keys().then(keys => {
                                 return Promise.all(
                                     keys.map(request => {
-                                        if (request.url.includes('/api/getTimetable')) {
+                                        if (request.url.includes('/api/getTimetable') || request.url.includes('/api/getTeacherTimetable')) {
                                             return caches.open(CACHE_NAME).then(async newCache => {
                                                 return newCache.put(request, (await cache.match(request)).clone()).then(() => {
                                                     return cache.delete(request);
@@ -47,6 +47,7 @@ self.addEventListener('activate', event => {
                 '/settings.svg',
                 '/notification.svg',
                 '/notification-off.svg',
+                '/share.svg',
                 '/localforage.min.js',
                 '/',
                 '/add',
@@ -60,7 +61,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         event.request.url.includes('/api') ?
             (
-                event.request.url.includes('/api/getTimetable') ? (
+                (event.request.url.includes('/api/getTimetable') || event.request.url.includes('/api/getTeacherTimetable')) ? (
                     fetch(event.request)
                         .then(response => {
                             return caches.open(CACHE_NAME).then(cache => {

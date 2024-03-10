@@ -16,7 +16,7 @@ function Tag({ subject }: { subject: string }) {
     )
 }
 
-function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, lesson: { subject: string, teacher: string, prevData?: { subject: string, teacher: string } } }, setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+function TeacherLessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, lesson: { subject: string, grade: number, classNum: number, prevData?: { subject: string, grade: number, classNum: number } } }, setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
     return (
         <>
             <div className="z-10 bg-black opacity-70 fixed top-0 bottom-0 left-0 right-0 cursor-pointer" onClick={(e) => { setIsOpen(false); }} />
@@ -30,7 +30,7 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                 <p>{['월', '화', '수', '목', '금'][data.day]}요일 {data.nth + 1}교시</p>
                 <br />
                 <div className="grid grid-cols-[auto_auto_1fr] mr-16">
-                    <p className={`font-bold text-2xl mr-3 ${data.lesson.subject == '' && 'text-gray-400 dark:text-gray-500'}`}>{data.lesson.subject == '' ? '수업 없음' : (
+                    <p className={`font-bold text-2xl mr-3 ${data.lesson.grade === 0 && 'text-gray-400 dark:text-gray-500'}`}>{data.lesson.grade === 0 ? '수업 없음' : (
                         Object.keys(subjectNameSubstitutes).reduce((prevVal, currVal) => {
                             return prevVal.replace(new RegExp(currVal, 'gi'), subjectNameSubstitutes[currVal]);
                         }, data.lesson.subject.toUpperCase())
@@ -42,7 +42,7 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                     } />}
                 </div>
                 {
-                    data.lesson.teacher ? <p>{data.lesson.teacher} 교사</p> : null
+                    data.lesson.grade > 0 ? <p>{data.lesson.grade}학년 {data.lesson.classNum}반</p> : null
                 }
                 {
                     data.lesson.prevData && (
@@ -65,7 +65,7 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
                                     } />}
                                     <div />
                                 </div>
-                                {Object.keys(data.lesson.prevData).length > 0 && <p>{data.lesson.prevData.teacher} 교사</p>}
+                                {Object.keys(data.lesson.prevData).length > 0 && <p>{data.lesson.prevData.grade}학년 {data.lesson.prevData.classNum}반</p>}
                             </div>
                         </div>
                     )
@@ -75,4 +75,4 @@ function LessonPopup({ data, setIsOpen }: { data: { day: number, nth: number, le
     )
 }
 
-export default LessonPopup;
+export default TeacherLessonPopup;
