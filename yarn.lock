@@ -619,10 +619,10 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-comcigan.js@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/comcigan.js/-/comcigan.js-1.1.1.tgz#5e700da9b2cd6d12063cec592f7da570a67bc89d"
-  integrity sha512-DIFqL1rkgM2B5gLyRfmtLBIMwqmgxuT7UFbMw5Au+qRhrz9PyJgAiOGNlgxYNG45N7ia1rkii51Tk4gYodqWKw==
+comcigan.js@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/comcigan.js/-/comcigan.js-1.1.2.tgz#d2b0094ffad1f83f003a95405938b7b366538091"
+  integrity sha512-m4fEPeOx7yEAOX5c3S1rtIeATfNhjBYRObpivu7bO85m2DSfk6NTNPQAnCvxBhZWWHYupovQJJ3Fnmz2sPdTGg==
   dependencies:
     iconv-lite "^0.6.3"
     node-fetch "^3.3.2"
