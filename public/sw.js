@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v17';
+const CACHE_NAME = 'cache-v18';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -47,7 +47,6 @@ self.addEventListener('activate', event => {
                 '/settings.svg',
                 '/notification.svg',
                 '/notification-off.svg',
-                '/share.svg',
                 '/localforage.min.js',
                 '/',
                 '/add',
