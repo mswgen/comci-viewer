@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/add', '/manage'],
     },
-    sitemap: 'https://comci.eastus.cloudapp.azure.com/sitemap.xml',
+    sitemap: 'https://comci.koreacentral.cloudapp.azure.com/sitemap.xml',
   }
 }
