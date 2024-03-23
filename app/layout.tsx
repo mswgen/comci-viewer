@@ -26,6 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `${process.env.URL!}`,
       siteName: '컴시간 뷰어',
       locale: 'ko_KR'
+    },
+    verification: {
+      google: 'psSpWDOJRFV-eoCrziljPAXCtNfdjz4pXqcT3dzf60k'
     }
   };
 }
