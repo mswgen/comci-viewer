@@ -29,7 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification: {
       google: 'psSpWDOJRFV-eoCrziljPAXCtNfdjz4pXqcT3dzf60k'
-    }
+    },
+    alternates: {
+      canonical: '/'
   };
 }
 
