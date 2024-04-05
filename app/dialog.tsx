@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export default function dialog({ title, content, type, setShowDialog, callback }: { title: string, content: string, type: 'alert' | 'confirm', setShowDialog: React.Dispatch<React.SetStateAction<boolean>>, callback: (result: boolean) => void }) {
     return (
         <>
