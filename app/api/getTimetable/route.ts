@@ -5,15 +5,15 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: Request) {
     const searchParams = new URL(request.url).searchParams;
     if (!searchParams.has('code') || isNaN(parseInt(searchParams.get('code')!))) return new Response(JSON.stringify({
-        code: 2,
+        code: 5,
         error: '학교 코드를 입력하세요.'
     }), { status: 400 });
     if (!searchParams.has('grade') || isNaN(parseInt(searchParams.get('grade')!))) return new Response(JSON.stringify({
-        code: 3,
+        code: 6,
         error: '학년을 입력하세요.'
     }), { status: 400 });
     if (!searchParams.has('classNum') || isNaN(parseInt(searchParams.get('classNum')!))) return new Response(JSON.stringify({
-        code: 4,
+        code: 7,
         error: '반을 입력하세요.'
     }), { status: 400 });
 

@@ -41,6 +41,7 @@ const AddClass: React.FC = () => {
     const [isOffline, setIsOffline] = useState(false);
     const [phase, setPhase] = useState(1);
     const [addedClasses, setAddedClasses] = useLocalStorage<Array<LSClass>>("addedClasses", []);
+    const [isInvalidSchool, setIsInvalidSchool] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -67,7 +68,6 @@ const AddClass: React.FC = () => {
     useEffect(() => {
         let isValid = true;
         async function fetchSearchResults() {
-            if (keyword.length < 1) return;
             const schoolList = await fetch(`/api/search?name=${keyword}`).then(res => res.json());
             if (isValid) setSchoolList(schoolList.data || []);
         }
@@ -92,11 +92,13 @@ const AddClass: React.FC = () => {
                 <br />
                 <p>학교를 먼저 선택하세요.</p>
                 <br />
-                <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%] dark:bg-[#424242]" id="schoolName" placeholder="학교 이름" onKeyUp={(e) => { setKeyword(e.currentTarget.value); }} tabIndex={2} />
+                <input type="text" className="border border-slate-400 h-12 rounded-lg p-4 w-[100%] dark:bg-[#424242]" id="schoolName" placeholder="학교 이름" onKeyUp={(e) => { setIsInvalidSchool(false); setKeyword(e.currentTarget.value); }} tabIndex={2} />
+                {isInvalidSchool && <div className="text-red-500">컴시간을 사용하지 않는 학교입니다.</div>}
                 {schoolList.length > 0 &&
                     <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
                         {schoolList.map((school: ({ name: string, code: number }), i) => (
                             <button key={i} tabIndex={i + 3} className={`block w-full pt-3 pb-3 border-b border-slate-400 cursor-pointer ${i === schoolList.length - 1 ? 'rounded-lg' : ''}`} onClick={() => {
+                                setIsInvalidSchool(false);
                                 setTmpSchool(school);
                                 setPhase(2);
                             }}>
@@ -107,7 +109,7 @@ const AddClass: React.FC = () => {
                 }
             </>
         ) : (
-            <AddClass2 school={tmpSchool} addedClasses={addedClasses} setAddedClasses={setAddedClasses} setPhase={setPhase} />
+            <AddClass2 school={tmpSchool} addedClasses={addedClasses} setAddedClasses={setAddedClasses} setPhase={setPhase} setIsInvalidSchool={setIsInvalidSchool} />
         ));
 }
 
@@ -115,8 +117,9 @@ const AddClass2: React.FC<{
     school: { name: string, code: number },
     addedClasses: Array<LSClass>,
     setAddedClasses: React.Dispatch<React.SetStateAction<Array<LSClass>>>,
-    setPhase: React.Dispatch<React.SetStateAction<number>>
-}> = ({ school, addedClasses, setAddedClasses, setPhase }) => {
+    setPhase: React.Dispatch<React.SetStateAction<number>>,
+    setIsInvalidSchool: React.Dispatch<React.SetStateAction<boolean>>
+}> = ({ school, addedClasses, setAddedClasses, setPhase, setIsInvalidSchool }) => {
     const router = useRouter();
     const [grade, setGrade] = useState(-1);
     const [classNum, setClassNum] = useState(-1);
@@ -129,11 +132,17 @@ const AddClass2: React.FC<{
         let isValid = true;
         const fetchSchoolInfo = async () => {
             const result = await getSchoolInfo(school.code);
-            if (isValid) setSchoolInfo(result.data);
+            if (isValid) {
+                if (result.code === 2) {
+                    setIsInvalidSchool(true);
+                    setPhase(1);
+                }
+                else setSchoolInfo(result.data);
+            }
         };
         fetchSchoolInfo();
         return () => { isValid = false; };
-    }, [school]);
+    }, [school, setPhase, setIsInvalidSchool]);
     useEffect(() => {
         localforage.setItem("classSelection", classSelection);
     }, [classSelection]);

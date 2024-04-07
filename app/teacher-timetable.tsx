@@ -90,10 +90,10 @@ const Timetable: React.FC<{
                 setIsLoading(true);
                 const response = await fetch(`/api/getTeacherTimetable?code=${classData.school.code}&teacher=${classData.teacher!.code + 1}`);
                 const result = await response.json();
-                setIsLoading(false);
                 setIsOffline(response.headers.has('X-Is-Cache') && response.headers.get('X-Is-Cache') === 'true');
                 setHasCache(true);
                 setTimetable(result.data);
+                setIsLoading(false);
             } catch (e) {
                 setIsOffline(true);
                 setHasCache(false);
@@ -158,7 +158,7 @@ const Timetable: React.FC<{
                                 <p className="text-center font-bold text-lg mb-4">{['월', '화', '수', '목', '금'][i]}</p>
                                 {isLoading ? (
                                     <>
-                                        <Card content1={''} gradient={true} />
+                                        <Card content1={'\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'} content2={'\u00A0'} gradient={true} />
                                         <Card content1={''} gradient={true} />
                                         <Card content1={''} gradient={true} />
                                         <Card content1={''} gradient={true} />

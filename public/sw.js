@@ -1,6 +1,6 @@
 importScripts('/localforage.min.js');
 
-const CACHE_NAME = 'cache-v4';
+const CACHE_NAME = 'cache-v5';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -49,6 +49,7 @@ self.addEventListener('activate', event => {
                 '/notification-off.svg',
                 '/copy.svg',
                 '/check.svg',
+                '/github.svg',
                 '/localforage.min.js',
                 '/',
                 '/add',
@@ -88,12 +89,12 @@ self.addEventListener('fetch', event => {
                 ) : fetch(event.request)
             )
             : caches.open(CACHE_NAME).then(async cache => {
-                const response = await cache.match(event.request);
+                const cacheResponse = await cache.match(event.request);
                 return (
-                    response ||
-                    fetch(event.request).then(response_1 => {
-                        cache.put(event.request, response_1.clone());
-                        return response_1;
+                    cacheResponse ||
+                    fetch(event.request).then(response => {
+                        cache.put(event.request, response.clone());
+                        return response;
                     })
                 );
             })
