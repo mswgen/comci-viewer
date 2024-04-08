@@ -1,12 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Noto_Sans_KR } from "next/font/google";
+import localFont from "next/font/local";
 
 import "./globals.css";
 import SecondLayout from "./second-layout";
 
-const NotoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
+const Pretendard = localFont({
+  src: '../public/PretendardVariable.woff2',
+  weight: "45 920",
+  display: "swap"
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -53,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="text-variable" style={{ fontFamily: NotoSansKR.style.fontFamily }}>
+    <html lang="ko" className="text-variable" style={{ fontFamily: Pretendard.style.fontFamily }}>
       <body>
         <main className="flex flex-col items-center justify-between p-12 pb-0 overflow-auto whitespace-nowrap text-nowrap overflow-y-hidden w-max ml-auto mr-auto">
           <div className="border border-slate-300 rounded p-8">

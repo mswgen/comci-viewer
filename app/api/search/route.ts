@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     const searchParams = new URL(request.url).searchParams;
     if (!searchParams.has('name')) return new Response(JSON.stringify({
         code: 3,
-        error: '학교 이름을 입력하세요.'
+        error: 'Enter school name.'
     }), { status: 400 });
 
     try {

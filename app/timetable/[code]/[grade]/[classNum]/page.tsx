@@ -28,7 +28,7 @@ const CustomTimetable: React.FC<{
         grade: string,
         classNum: string
     }
-}> = ({ params }: { params: { code: string, grade: string, classNum: string } }) => {
+}> = async ({ params }: { params: { code: string, grade: string, classNum: string } }) => {
     return (
         <>
             <h1 className="text-center text-3xl">컴시간 뷰어</h1>

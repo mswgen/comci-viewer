@@ -16,11 +16,11 @@ export const contentType = 'image/png'
 // Image generation
 export default async function OpenGraphImage({ params }: { params: { code: string, teacher: string } }) {
     // Font
-    const NotoSansKRRegular = fetch(
-        new URL(`${process.env.URL!}/NotoSansKR-Regular.ttf`)
+    const PretendardRegular = fetch(
+        new URL(`${process.env.URL!}/Pretendard-Regular.ttf`)
     ).then((res) => res.arrayBuffer())
-    const NotoSansKRBold = fetch(
-        new URL(`${process.env.URL!}/NotoSansKR-Bold.ttf`)
+    const PretendardBold = fetch(
+        new URL(`${process.env.URL!}/Pretendard-Bold.ttf`)
     ).then((res) => res.arrayBuffer())
 
     return new ImageResponse(
@@ -52,11 +52,11 @@ export default async function OpenGraphImage({ params }: { params: { code: strin
             fonts: [
                 {
                     name: 'Noto Sans KR Regular',
-                    data: await NotoSansKRRegular
+                    data: await PretendardRegular
                 },
                 {
                     name: 'Noto Sans KR Bold',
-                    data: await NotoSansKRBold
+                    data: await PretendardBold
                 },
             ],
         }

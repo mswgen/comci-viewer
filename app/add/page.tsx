@@ -87,7 +87,7 @@ const AddClass: React.FC = () => {
                 <button onClick={(e) => {
                     e.preventDefault();
                     router.back();
-                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert w-9 h-9" tabIndex={1} /></button>
+                }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.5rem] dark:invert w-9 h-9" tabIndex={1} /></button>
                 <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
                 <br />
                 <p>학교를 먼저 선택하세요.</p>
@@ -152,7 +152,7 @@ const AddClass2: React.FC<{
             <button onClick={(e) => {
                 e.preventDefault();
                 setPhase(1);
-            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert w-9 h-9" /></button>
+            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.5rem] dark:invert w-9 h-9" /></button>
             <h1 className="text-center text-3xl ml-12">시간표 추가하기</h1>
             <br />
             <input type="radio" name="teacher" id="student" value="student" checked={!isTeacherSelected} onChange={(e) => { setIsTeacherSelected(!e.currentTarget.checked); }} />

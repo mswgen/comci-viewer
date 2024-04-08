@@ -87,7 +87,7 @@ const ManageClasses: React.FC = () => {
             <button onClick={(e) => {
                 e.preventDefault();
                 router.back();
-            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert w-9 h-9" /></button>
+            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.5rem] dark:invert w-9 h-9" /></button>
             <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
             <br />
             <div className="border-slate-400 border-t border-l border-r rounded-lg mt-4">
@@ -204,7 +204,7 @@ const ManageClasses: React.FC = () => {
             <button onClick={(e) => {
                 e.preventDefault();
                 router.back();
-            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.4rem] dark:invert w-9 h-9" /></button>
+            }}><Image src="/back.svg" alt="뒤로가기" height={36} width={36} className="absolute mt-[.5rem] dark:invert w-9 h-9" /></button>
             <h1 className="text-center text-3xl ml-12">시간표 관리하기</h1>
             <br />
             <p>현재 추가된 시간표가 없습니다.</p>
